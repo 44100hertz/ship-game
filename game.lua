@@ -3,7 +3,7 @@ local sprite = {}
 
 -- Functions for manipulating tables
 sprites = {
-   add = function (self, spriteect, x, y)
+   add = function (self, sprite, x, y)
       index = table.getn(sprite)+1
       sprite[index] = spriteect.new()
       sprite[index].x = x
