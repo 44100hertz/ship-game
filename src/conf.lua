@@ -4,7 +4,7 @@ function love.conf(t)
    t.window.title = "ship"
    t.window.width = gamesize.x*3
    t.window.height = gamesize.y*3
-   t.window.resizable = true
+   t.window.resizable = false
    t.window.minwidth = gamesize.x
    t.window.minheight = gamesize.y
 
