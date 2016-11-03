@@ -6,13 +6,13 @@ test = {
       setmetatable(o, self)
       self.__index = self
 
+      o.dx, o.dy, o.ddx, o.ddy = 0,0,0,0
       o.sendbox = {
-	 size = 23,
+	 size = 24,
       }
       o.recvbox = {
-	 size = 23,
+	 size = 24,
       }
-      o.dx, o.dy = 0, 0
 
       return o
    end,
@@ -22,6 +22,10 @@ test = {
       self.dy = self.dy * 0.95
       self.x = self.x + self.dx
       self.y = self.y + self.dy
+      if input.dd > 0 then self.dy = self.dy + 0.2 end
+      if input.du > 0 then self.dy = self.dy - 0.2 end
+      if input.dl > 0 then self.dx = self.dx - 0.2 end
+      if input.dr > 0 then self.dx = self.dx + 0.2 end
       self.sendbox.x = self.x
       self.sendbox.y = self.y
       self.recvbox.x = self.x
@@ -29,14 +33,10 @@ test = {
    end,
 
    draw = function (self,x,y)
-      love.graphics.draw(img,math.floor(x),math.floor(y))
+      love.graphics.draw(img, math.floor(x), math.floor(y))
    end,
 
    collide = function (self, with)
-      self.dx = with.dx
-      self.dy = with.dy
-      self.x = self.x + with.dx
-      self.y = self.y + with.dy
    end
 }
 

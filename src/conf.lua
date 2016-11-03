@@ -8,7 +8,6 @@ function love.conf(t)
    t.window.minwidth = gamesize.x
    t.window.minheight = gamesize.y
 
-   t.modules.event = nil
    t.modules.mouse = nil
    t.modules.physics = nil
    t.modules.system = nil

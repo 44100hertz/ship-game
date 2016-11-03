@@ -1,7 +1,10 @@
+input = require "input"
+
+local quit = false
 main = {
    loadstate = function (mod)
       state = mod
-   end
+   end,
 }
 
 local canvas = love.graphics.newCanvas()
@@ -12,6 +15,17 @@ love.run = function ()
    main.loadstate(require "game")
 
    while true do
+      love.event.pump()
+      for name, a,b,c,d,e,f in love.event.poll() do
+	 if name == "quit" then
+	    if not love.quit or not love.quit() then
+	       return a
+	    end
+	 end
+	 love.handlers[name](a,b,c,d,e,f)
+      end
+
+      input.update()
       state.update()
 
       canvas:renderTo( function()
