@@ -3,14 +3,18 @@ local sprites = {}
 
 -- Functions for manipulating tables
 sprite = {
-   add = function (self, sprites, x, y)
+   add = function (parent, newsprite, x, y)
       index = table.getn(sprites)+1
-      sprites[index] = spritesect.new()
+      sprites[index] = newsprite:new()
       sprites[index].x = x
       sprites[index].y = y
-      sprites[index].parent = self
+      sprites[index].parent = parent
    end
 }
+
+local test = require "sprites/test"
+sprite.add(nil, test, 10, 10)
+sprite.add(nil, test, 60, 10)
 
 -- Basic a^2 + b^2 = c^2 circle collision
 local collideswith = function (send, recv)
