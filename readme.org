@@ -17,8 +17,8 @@ A game concept for my learning.
  - returns module to be loaded by main
  - keeps list of sprites, runs callbacks on them
  - global functions:
-   - sprites.add(parent,sprite,x,y) :: add an sprite to the game
-   - sprites.signal(sprite, code) :: send an sprite a signal
+   - sprite.add(parent,sprite,x,y) :: add an sprite to the game
+   - sprite.signal(sprite, code) :: send an sprite a signal
 
 ** TODO sprites
  - a type of table stored by game

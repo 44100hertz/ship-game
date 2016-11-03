@@ -1,14 +1,14 @@
--- Table of all game sprites
-local sprite = {}
+-- Table of all game sprite
+local sprites = {}
 
 -- Functions for manipulating tables
-sprites = {
-   add = function (self, sprite, x, y)
-      index = table.getn(sprite)+1
-      sprite[index] = spriteect.new()
-      sprite[index].x = x
-      sprite[index].y = y
-      sprite[index].parent = self
+sprite = {
+   add = function (self, sprites, x, y)
+      index = table.getn(sprites)+1
+      sprites[index] = spritesect.new()
+      sprites[index].x = x
+      sprites[index].y = y
+      sprites[index].parent = self
    end
 }
 
@@ -23,8 +23,8 @@ end
 return {
    update = function ()
       -- Check all hitboxes
-      for _,recv in ipairs(sprite) do
-	 for _,send in ipairs(sprite) do
+      for _,recv in ipairs(sprites) do
+	 for _,send in ipairs(sprites) do
 	    if recv.recvbox and send.sendbox and
 	    collideswith(recv.recvbox, send.sendbox) then
 	       recv.collide(send)
@@ -32,12 +32,12 @@ return {
 	 end
       end
 
-      -- Update all spriteect states
-      for _,v in ipairs(sprite) do v.update() end
+      -- Update all spritesect states
+      for _,v in ipairs(sprites) do v.update() end
    end,
 
    draw = function ()
       -- Passes x and y to self for scrolling...todo
-      for _,v in ipairs(sprite) do v.draw(v.x,v.y) end
+      for _,v in ipairs(sprites) do v.draw(v.x,v.y) end
    end,
 }
