@@ -1,0 +1,30 @@
+* Ship
+A game concept for my learning.
+
+* Structure
+
+** TODO love.run
+ - Overriden to do updates 60 times a second always, but draw at native framerate
+ - Will be added as additional mode; for now assumes 60hz and is locked
+
+** TODO main
+ - Sets up window, does basic draw stuff
+ - Loads in a state module with init, update, and draw functions
+ - Provides global main.loadstate(<module>) to load in a new module
+ - draw() callback expected to return a canvas
+
+** TODO game
+ - returns module to be loaded by main
+ - keeps list of objects, runs callbacks on them
+ - global functions:
+   - objects.add(parent,object,x,y) :: add an object to the game
+   - objects.signal(object, code) :: send an object a signal
+
+** TODO objects
+ - a type of table stored by game
+   - new() :: return a new object. used in objects.add
+   - update() :: advance object state by a frame
+   - draw(x,y) :: draw at given coords using internal sprite vals.
+   - collide(object) :: react to being collided with by given object.
+   - damage :: a damage value to be read in for collision on player, etc.
+   - x,y :: position. Used by draw.
