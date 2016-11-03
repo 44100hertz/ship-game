@@ -37,11 +37,11 @@ return {
       end
 
       -- Update all spritesect states
-      for _,v in ipairs(sprites) do v.update() end
+      for _,v in ipairs(sprites) do v:update() end
    end,
 
    draw = function ()
       -- Passes x and y to self for scrolling...todo
-      for _,v in ipairs(sprites) do v.draw(v.x,v.y) end
+      for _,v in ipairs(sprites) do v:draw(v.x,v.y) end
    end,
 }

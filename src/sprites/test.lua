@@ -8,10 +8,11 @@ test = {
       return o
    end,
 
-   update = function ()
+   update = function (self)
+      self.x = self.x + 1
    end,
 
-   draw = function (x,y)
+   draw = function (self,x,y)
       love.graphics.draw(img,x,y)
    end
 }
