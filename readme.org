@@ -15,16 +15,19 @@ A game concept for my learning.
 
 ** TODO game
  - returns module to be loaded by main
- - keeps list of objects, runs callbacks on them
+ - keeps list of sprites, runs callbacks on them
  - global functions:
-   - objects.add(parent,object,x,y) :: add an object to the game
-   - objects.signal(object, code) :: send an object a signal
+   - sprites.add(parent,sprite,x,y) :: add an sprite to the game
+   - sprites.signal(sprite, code) :: send an sprite a signal
 
-** TODO objects
+** TODO sprites
  - a type of table stored by game
-   - new() :: return a new object. used in objects.add
-   - update() :: advance object state by a frame
+   - new() :: return a new sprite. used in sprites.add
+   - update() :: advance sprite state by a frame
    - draw(x,y) :: draw at given coords using internal sprite vals.
-   - collide(object) :: react to being collided with by given object.
+   - collide(sprite) :: react to being collided with by given sprite.
+   - tangible :: true if occupies space
+   - recvbox :: x,y,size circular collision box
+   - sendbox :: x,y,size circular collision box
    - damage :: a damage value to be read in for collision on player, etc.
    - x,y :: position. Used by draw.
