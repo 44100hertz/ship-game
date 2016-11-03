@@ -21,23 +21,24 @@ local collideswith = function (send, recv)
    local sq = function(x) return x*x end
    local size = sq(send.size + recv.size)
    local dist = sq(send.x-recv.x) + sq(send.y-recv.y)
-   return (dist < size)
+   return (size > dist)
 end
 
 return {
    update = function ()
+      -- Update all sprite states
+      for _,v in ipairs(sprites) do v:update() end
+
       -- Check all hitboxes
-      for _,recv in ipairs(sprites) do
-	 for _,send in ipairs(sprites) do
-	    if recv.recvbox and send.sendbox and
+      for irecv,recv in ipairs(sprites) do
+	 for isend,send in ipairs(sprites) do
+	    if irecv ~= isend and
+	       recv.recvbox and send.sendbox and
 	    collideswith(recv.recvbox, send.sendbox) then
-	       recv.collide(send)
+	       recv:collide(send)
 	    end
 	 end
       end
-
-      -- Update all spritesect states
-      for _,v in ipairs(sprites) do v:update() end
    end,
 
    draw = function ()

@@ -7,7 +7,7 @@ A game concept for my learning.
  - Overriden to do updates 60 times a second always, but draw at native framerate
  - Will be added as additional mode; for now assumes 60hz and is locked
 
-** TODO main
+** main
  - Sets up window, does basic draw stuff
  - Loads in a state module with init, update, and draw functions
  - Provides global main.loadstate(<module>) to load in a new module
