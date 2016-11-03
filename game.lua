@@ -12,9 +12,8 @@ sprite = {
    end
 }
 
-local test = require "sprites/test"
-sprite.add(nil, test, 10, 10)
-sprite.add(nil, test, 60, 10)
+sprite.add(nil, require "sprites/test", 80, 120)
+sprite.add(nil, require "sprites/testplayer", 10, 10)
 
 -- Basic a^2 + b^2 = c^2 circle collision
 local collideswith = function (send, recv)
