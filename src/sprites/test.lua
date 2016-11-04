@@ -12,16 +12,21 @@ test = {
       o.recvbox = {
 	 size = 23,
       }
-      o.dx, o.dy = 0, 0
-
+      o.rel_y = 0
+      o.dx, o.dy, o.ddx, o.ddy = 0, 1, 0, 1
       return o
    end,
 
    update = function (self)
-      self.dx = self.dx * 0.95
-      self.dy = self.dy * 0.95
-      self.x = self.x + self.dx
-      self.y = self.y + self.dy
+      self.rel_y = self.rel_y + self.dy
+      self.dy = self.dy + self.ddy
+      self.ddy = -self.rel_y * 0.01
+      --if self.dy < -1 then self.dy = -1 end
+      --if self.dy > 1 then self.dy = 1 end
+
+      self.x = self.x + 1
+      self.y = self.rel_y + 60
+
       self.sendbox.x = self.x
       self.sendbox.y = self.y
       self.recvbox.x = self.x
@@ -33,10 +38,6 @@ test = {
    end,
 
    collide = function (self, with)
-      self.dx = with.dx
-      self.dy = with.dy
-      self.x = self.x + with.dx
-      self.y = self.y + with.dy
    end
 }
 
