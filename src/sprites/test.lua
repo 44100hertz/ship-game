@@ -1,7 +1,7 @@
 local img = love.graphics.newImage("img/testcirc.png")
 
 test = {
-   new = function (self)
+   new = function (self, x, y)
       o = {}
       setmetatable(o, self)
       self.__index = self
@@ -13,6 +13,8 @@ test = {
 	 size = 23,
       }
       o.rel_y = 0
+      o.x, o.y = x, y
+      o.abs_y=y
       o.dx, o.dy, o.ddx, o.ddy = 0, 1, 0, 1
       return o
    end,
@@ -25,7 +27,7 @@ test = {
       --if self.dy > 1 then self.dy = 1 end
 
       self.x = self.x + 1
-      self.y = self.rel_y + 60
+      self.y = self.rel_y + self.abs_y
 
       self.sendbox.x = self.x
       self.sendbox.y = self.y

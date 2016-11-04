@@ -1,4 +1,5 @@
 input = require "input"
+anim = require "anim"
 
 local quit = false
 main = {
@@ -29,7 +30,7 @@ love.run = function ()
       state.update()
 
       canvas:renderTo( function()
-	    love.graphics.clear(187,240,212,255)
+	    love.graphics.clear(85,45,65,255)
 	    state.draw()
       end)
 

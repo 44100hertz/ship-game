@@ -5,15 +5,12 @@ local sprites = {}
 sprite = {
    add = function (parent, newsprite, x, y)
       index = table.getn(sprites)+1
-      sprites[index] = newsprite:new()
-      sprites[index].x = x
-      sprites[index].y = y
-      sprites[index].parent = parent
+      sprites[index] = newsprite:new(x, y, parent)
    end
 }
 
 sprite.add(nil, require "sprites/test", 80, 120)
-sprite.add(nil, require "sprites/testplayer", 10, 10)
+sprite.add(nil, require "sprites/player", 10, 10)
 
 -- Basic a^2 + b^2 = c^2 circle collision
 local collideswith = function (send, recv)
