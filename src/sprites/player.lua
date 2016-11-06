@@ -74,9 +74,9 @@ local white = {
 yolk = {
    anim = {
       idle = {1, speed=0},
-      shoot = {2, 3, 4, 5, 6, 7, speed=0.25},
-      hurt = {11, 12, 13, 14, 15, speed=0.25},
-      blink = {16, 17, 18, 19, 20, 21, speed=0.25},
+      shoot = {2, 3, 4, 5, 6, 7, speed=0.33},
+      hurt = {11, 12, 13, 14, 15, speed=0.5},
+      blink = {16, 17, 18, 19, 20, 21, speed=0.5},
    },
    new = function (self, x, y)
       local o = {
@@ -105,7 +105,7 @@ yolk = {
       self.y = self.y + self.dy
 
       -- Shooting
-      if input.b == 1 then
+      if input.b > 0 and self.anim == yolk.anim.idle then
 	 sprite.add(self, bullet, self.x, self.y)
 	 self.statetime = 0
 	 self.anim = yolk.anim.shoot
@@ -126,7 +126,9 @@ yolk = {
    end,
 
    draw = function (self,x,y)
-      local frame = self.sheet[self.anim[self.statetime * self.anim.speed]]
+      local frame = self.sheet[self.anim[
+				  math.floor(self.statetime * self.anim.speed)+1
+			      ]]
 
       if not frame then
 	 self.anim = yolk.anim.idle
