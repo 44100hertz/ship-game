@@ -5,18 +5,18 @@ local bullet = {
    new = function (self, x, y, parent)
       local o = {
 	 sheet = animation.sheet(0, 80, 8, 8, iwidth, iheight, 3),
-	 dx = parent.dx+1,
+	 x=x, y=y,
+	 dx = parent.dx + 3,
 	 dy = parent.dy,
 	 sendbox = {size = 3},
 	 recvbox = {size = 3},
-	 coordq = {head=0, [0]={x,y}}
       }
       setmetatable(o, self)
       self.__index = self
       return o
    end,
 
-   update = function ()
+   update = function (self)
       self.x = self.x + self.dx
       self.y = self.y + self.dy
       self.sendbox.x = self.x
@@ -25,23 +25,13 @@ local bullet = {
       self.recvbox.y = self.y
    end,
 
-   draw = function ()
-      -- Keep a rotating queue of position history
-      coordq.head = (coordq.head + 1) % 20
-      coordq[coordq.head] = {x,y}
-      -- Draw bullet and its tail based on history
+   draw = function (self)
       love.graphics.draw(
-	 img, sheet_bullet[1], math.floor(self.x), math.floor(self.y),
+	 img, self.sheet[1], math.floor(self.x), math.floor(self.y),
 	 0, 1, 1, 4, 4)
-      local coordq10 = coordq[(coordq.head-20)%20]
-      love.graphics.draw(
-	 img, sheet_bullet[2], math.floor(coordq10.x), math.floor(coordq10.y),
-	 0, 1, 1, 4, 4)
-      local coordq20 = coordq[(coordq.head-20)%20]
-      love.graphics.draw(
-	 img, sheet_bullet[3], math.floor(coordq20.x), math.floor(coordq20.y),
-	 0, 1, 1, 4, 4)
-   end
+   end,
+
+   collide = function (self) end
 }
 
 local white = {
@@ -106,6 +96,7 @@ yolk = {
 
       -- Shooting
       if input.b == 1 then
+	 sprite.add(self, bullet, self.x, self.y)
 	 self.statetime = 0
 	 self.anim = yolk.anim.shoot
       end
