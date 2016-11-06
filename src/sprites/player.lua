@@ -23,11 +23,20 @@ local bullet = {
       self.sendbox.y = self.y
       self.recvbox.x = self.x
       self.recvbox.y = self.y
+      self.despawn = self.offscreen
    end,
 
-   draw = function (self)
+   draw = function (self, x, y)
       love.graphics.draw(
-	 img, self.sheet[1], math.floor(self.x), math.floor(self.y),
+	 img, self.sheet[1], math.floor(x), math.floor(y),
+	 0, 1, 1, 4, 4)
+      love.graphics.draw(
+	 img, self.sheet[2],
+	 math.floor(x-self.dx), math.floor(y-self.dy),
+	 0, 1, 1, 4, 4)
+      love.graphics.draw(
+	 img, self.sheet[3],
+	 math.floor(x-self.dx*2), math.floor(y-self.dy*2),
 	 0, 1, 1, 4, 4)
    end,
 
@@ -51,10 +60,10 @@ local white = {
    update = function (self)
    end,
 
-   draw = function (self)
+   draw = function (self, x, y)
       local frame = self.sheet[1]
       love.graphics.draw(img, frame,
-			 math.floor(self.x), math.floor(self.y),
+			 math.floor(x), math.floor(y),
 			 0, 1, 1, 7, 7)
       self.x = self.parent.x
       self.y = self.parent.y
@@ -124,7 +133,7 @@ yolk = {
       end
 
       love.graphics.draw(
-	 img, frame, math.floor(self.x), math.floor(self.y),
+	 img, frame, math.floor(x), math.floor(y),
 	 0, 1, 1, 7, 7)
    end,
 
