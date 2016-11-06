@@ -50,7 +50,7 @@ local white = {
 	 depth=150,
 	 x=x, y=y,
 	 parent = parent,
-	 sheet = animation.sheet(0, 0, 20, 16, iwidth, iheight, 10),
+	 sheet = animation.sheet(0, 0, 20, 16, iwidth, iheight, 7),
       }
       o.frame = o.sheet[1]
       setmetatable(o, self)
@@ -62,7 +62,8 @@ local white = {
    end,
 
    draw = function (self, x, y)
-      local frame = self.sheet[1]
+      local frame = self.sheet[
+	 math.floor(self.parent.statetime * 0.5) + 1] or self.sheet[1]
       love.graphics.draw(img, frame,
 			 math.floor(x), math.floor(y),
 			 0, 1, 1, 7, 7)
