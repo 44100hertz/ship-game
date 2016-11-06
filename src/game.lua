@@ -20,13 +20,14 @@ local collideswith = function (send, recv)
    return (size > dist)
 end
 
+local scroll = 0
 return {
    update = function ()
       -- Update all sprite states
       for _,v in ipairs(sprites) do
 	 v:update()
-	 v.offscreen = (v.x > 260 or v.x < -20 or
-		        v.y > 260 or v.y < -20)
+	 v.offscreen = (v.x-scroll > 260 or v.x-scroll < -20 or
+			   v.y > 260 or v.y < -20)
       end
 
       -- Check all hitboxes
@@ -43,6 +44,9 @@ return {
       for k,v in ipairs(sprites) do
 	 if v.despawn then table.remove(sprites, k) end
       end
+
+      -- TODO: add visscroll for when video is separate
+      scroll = scroll + 0.25
    end,
 
    draw = function ()
@@ -52,6 +56,6 @@ return {
 		    return (o1.depth > o2.depth)
 		 end
       )
-      for _,v in ipairs(sprites) do v:draw(v.x,v.y) end
+      for _,v in ipairs(sprites) do v:draw(v.x - scroll, v.y) end
    end,
 }
