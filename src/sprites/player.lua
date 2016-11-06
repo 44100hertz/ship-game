@@ -1,19 +1,47 @@
 local img = love.graphics.newImage("img/player.png")
 local iwidth, iheight = img:getDimensions()
 
-local sheet_white = {
-   shoot = anim.strip(0, 0, 20, 16, iwidth, iheight, 7)
-}
-local sheet_yolk = {
-   shoot = anim.strip(0, 16, 20, 16, iwidth, iheight, 7),
-   hurt = anim.strip(0, 32, 20, 16, iwidth, iheight, 5),
-   blink = anim.strip(0, 48, 20, 16, iwidth, iheight, 6),
-}
-local anims = {
-   idle = {1},
-   shoot = {2,3,4,5,6,7},
-   hurt = {1,2,3,4,5},
-   blink = {1,2,3,4,5,6},
+local bullet = {
+   new = function (self, x, y, parent)
+      local o = {
+	 sheet = animation.sheet(0, 80, 8, 8, iwidth, iheight, 3),
+	 dx = parent.dx+1,
+	 dy = parent.dy,
+	 sendbox = {size = 3},
+	 recvbox = {size = 3},
+	 coordq = {head=0, [0]={x,y}}
+      }
+      setmetatable(o, self)
+      self.__index = self
+      return o
+   end,
+
+   update = function ()
+      self.x = self.x + self.dx
+      self.y = self.y + self.dy
+      self.sendbox.x = self.x
+      self.sendbox.y = self.y
+      self.recvbox.x = self.x
+      self.recvbox.y = self.y
+   end,
+
+   draw = function ()
+      -- Keep a rotating queue of position history
+      coordq.head = (coordq.head + 1) % 20
+      coordq[coordq.head] = {x,y}
+      -- Draw bullet and its tail based on history
+      love.graphics.draw(
+	 img, sheet_bullet[1], math.floor(self.x), math.floor(self.y),
+	 0, 1, 1, 4, 4)
+      local coordq10 = coordq[(coordq.head-20)%20]
+      love.graphics.draw(
+	 img, sheet_bullet[2], math.floor(coordq10.x), math.floor(coordq10.y),
+	 0, 1, 1, 4, 4)
+      local coordq20 = coordq[(coordq.head-20)%20]
+      love.graphics.draw(
+	 img, sheet_bullet[3], math.floor(coordq20.x), math.floor(coordq20.y),
+	 0, 1, 1, 4, 4)
+   end
 }
 
 local white = {
@@ -22,8 +50,9 @@ local white = {
 	 depth=150,
 	 x=x, y=y,
 	 parent = parent,
-	 anim = anims.idle,
+	 sheet = animation.sheet(0, 0, 20, 16, iwidth, iheight, 10),
       }
+      o.frame = o.sheet[1]
       setmetatable(o, self)
       self.__index = self
       return o
@@ -33,7 +62,7 @@ local white = {
    end,
 
    draw = function (self)
-      local frame = sheet_white.shoot[1]
+      local frame = self.sheet[1]
       love.graphics.draw(img, frame,
 			 math.floor(self.x), math.floor(self.y),
 			 0, 1, 1, 7, 7)
@@ -43,12 +72,19 @@ local white = {
 }
 
 yolk = {
+   anim = {
+      idle = {1, speed=0},
+      shoot = {2, 3, 4, 5, 6, 7, speed=0.25},
+      hurt = {11, 12, 13, 14, 15, speed=0.25},
+      blink = {16, 17, 18, 19, 20, 21, speed=0.25},
+   },
    new = function (self, x, y)
       local o = {
 	 depth=100,
 	 x=x, y=y,
 	 dx=0, dy=0,
-	 anim = anims.idle,
+	 sheet = animation.sheet(0, 16, 20, 16, iwidth, iheight, 10, 3),
+	 anim = yolk.anim.idle,
 	 statetime = 0,
 	 sendbox = { size = 3, },
 	 recvbox = { size = 4, },
@@ -71,7 +107,7 @@ yolk = {
       -- Shooting
       if input.b == 1 then
 	 self.statetime = 0
-	 self.anim = anims_yolk.shoot
+	 self.anim = yolk.anim.shoot
       end
       -- Movement
       if input.dd > 0 then self.dy = self.dy + 0.5 end
@@ -89,11 +125,11 @@ yolk = {
    end,
 
    draw = function (self,x,y)
-      local frame = sheet_yolk.shoot[1]
+      local frame = self.sheet[self.anim[self.statetime * self.anim.speed]]
 
       if not frame then
-	 self.anim = anims_yolk.idle
-	 frame = anims_yolk.idle[1]
+	 self.anim = yolk.anim.idle
+	 frame = self.sheet[1]
       end
 
       love.graphics.draw(

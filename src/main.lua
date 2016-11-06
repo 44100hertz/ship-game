@@ -1,5 +1,5 @@
 input = require "input"
-anim = require "anim"
+animation = require "animation"
 
 local quit = false
 main = {
