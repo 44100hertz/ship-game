@@ -63,7 +63,7 @@ local white = {
 
    draw = function (self, x, y)
       local frame = self.sheet[
-	 math.floor(self.parent.statetime * 0.5) + 1] or self.sheet[1]
+	 math.ceil(self.parent.statetime * 2)] or self.sheet[1]
       love.graphics.draw(img, frame,
 			 math.floor(x), math.floor(y),
 			 0, 1, 1, 7, 7)
@@ -123,13 +123,11 @@ yolk = {
       self.recvbox.x = self.x
       self.recvbox.y = self.y
 
-      self.statetime = self.statetime + 1
+      self.statetime = self.statetime + self.anim.speed
    end,
 
    draw = function (self,x,y)
-      local frame = self.sheet[self.anim[
-				  math.floor(self.statetime * self.anim.speed)+1
-			      ]]
+      local frame = self.sheet[self.anim[math.ceil(self.statetime)]]
 
       if not frame then
 	 self.anim = yolk.anim.idle
