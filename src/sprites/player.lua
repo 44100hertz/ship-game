@@ -77,7 +77,7 @@ yolk = {
       idle = {1, speed=0},
       shoot = {2, 3, 4, 5, 6, 7, speed=0.33},
       hurt = {11, 12, 13, 14, 15, speed=0.5},
-      blink = {16, 17, 18, 19, 20, 21, speed=0.5},
+      blink = {25, 24, 23, 22, speed=0.25},
    },
    new = function (self, x, y)
       local o = {
@@ -132,6 +132,7 @@ yolk = {
       if not frame then
 	 self.anim = yolk.anim.idle
 	 frame = self.sheet[1]
+	 self.statetime = 0
       end
 
       love.graphics.draw(
