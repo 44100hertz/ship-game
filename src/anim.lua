@@ -10,17 +10,6 @@ anim = {
       end
       return quads
    end,
-
-   frames = function (frames, lengths)
-      local index = 1
-      local anim = {}
-      for k,v in ipairs(frames) do
-	 for _ = 1,lengths[k] do
-	    anim[index] = v
-	    index = index + 1
-	 end
-      end
-   end
 }
 
 return anim

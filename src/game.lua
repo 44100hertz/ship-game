@@ -5,7 +5,6 @@ local sprites = {}
 sprite = {
    add = function (parent, newsprite, x, y)
       local index = table.getn(sprites) + 1
-      print(index)
       sprites[index] = {} -- Fixes issue with :new calling sprites.add
       sprites[index] = newsprite:new(x, y, parent)
    end
