@@ -5,6 +5,7 @@ local bullet = {
    new = function (self, x, y, parent)
       local o = {
 	 sheet = animation.sheet(0, 80, 8, 8, iwidth, iheight, 3),
+	 depth = 125,
 	 x=x, y=y,
 	 dx = parent.dx + 3,
 	 dy = parent.dy,

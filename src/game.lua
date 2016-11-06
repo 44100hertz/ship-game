@@ -7,10 +7,9 @@ sprite = {
       local index = table.getn(sprites) + 1
       sprites[index] = {} -- Fixes issue with :new calling sprites.add
       sprites[index] = newsprite:new(x, y, parent)
-   end
+   end,
 }
 
-sprite.add(nil, require "sprites/test", 80, 120)
 sprite.add(nil, require "sprites/player", 40, 40)
 
 -- Basic a^2 + b^2 = c^2 circle collision
@@ -24,7 +23,11 @@ end
 return {
    update = function ()
       -- Update all sprite states
-      for _,v in ipairs(sprites) do v:update() end
+      for _,v in ipairs(sprites) do
+	 v:update()
+	 v.offscreen = (v.x > 260 or v.x < -20 or
+		        v.y > 260 or v.y < -20)
+      end
 
       -- Check all hitboxes
       for irecv,recv in ipairs(sprites) do
@@ -36,17 +39,17 @@ return {
 	    end
 	 end
       end
+
+      for k,v in ipairs(sprites) do
+	 if v.despawn then table.remove(sprites, k) end
+      end
    end,
 
    draw = function ()
       -- Passes x and y to self for scrolling...todo
       table.sort(sprites,
 		 function (o1, o2)
-		    if o1.depth and o2.depth then
-		       return (o1.depth > o2.depth)
-		    else
-		       return false
-		    end
+		    return (o1.depth > o2.depth)
 		 end
       )
       for _,v in ipairs(sprites) do v:draw(v.x,v.y) end
