@@ -19,6 +19,7 @@ local anims = {
 local white = {
    new = function (self, x, y, parent)
       local o = {
+	 depth=150,
 	 x=x, y=y,
 	 parent = parent,
 	 anim = anims.idle,
@@ -44,6 +45,7 @@ local white = {
 yolk = {
    new = function (self, x, y)
       local o = {
+	 depth=100,
 	 x=x, y=y,
 	 dx=0, dy=0,
 	 anim = anims.idle,

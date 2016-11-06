@@ -40,6 +40,15 @@ return {
 
    draw = function ()
       -- Passes x and y to self for scrolling...todo
+      table.sort(sprites,
+		 function (o1, o2)
+		    if o1.depth and o2.depth then
+		       return (o1.depth > o2.depth)
+		    else
+		       return false
+		    end
+		 end
+      )
       for _,v in ipairs(sprites) do v:draw(v.x,v.y) end
    end,
 }
