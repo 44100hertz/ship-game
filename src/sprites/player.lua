@@ -1,10 +1,10 @@
 local img = love.graphics.newImage("img/player.png")
 local iwidth, iheight = img:getDimensions()
 
+local bullet_sheet = animation.sheet(0, 80, 8, 8, iwidth, iheight, 3)
 local bullet = {
    new = function (self, x, y, parent)
       local o = {
-	 sheet = animation.sheet(0, 80, 8, 8, iwidth, iheight, 3),
 	 depth = 125,
 	 x=x, y=y,
 	 dx = parent.dx + 3,
@@ -29,14 +29,14 @@ local bullet = {
 
    draw = function (self, x, y)
       love.graphics.draw(
-	 img, self.sheet[1], math.floor(x), math.floor(y),
+	 img, bullet_sheet[1], math.floor(x), math.floor(y),
 	 0, 1, 1, 4, 4)
       love.graphics.draw(
-	 img, self.sheet[2],
+	 img, bullet_sheet[2],
 	 math.floor(x-self.dx), math.floor(y-self.dy),
 	 0, 1, 1, 4, 4)
       love.graphics.draw(
-	 img, self.sheet[3],
+	 img, bullet_sheet[3],
 	 math.floor(x-self.dx*2), math.floor(y-self.dy*2),
 	 0, 1, 1, 4, 4)
    end,
@@ -44,15 +44,15 @@ local bullet = {
    collide = function (self) end
 }
 
+local white_sheet = animation.sheet(0, 0, 20, 16, iwidth, iheight, 7)
 local white = {
    new = function (self, x, y, parent)
       local o = {
 	 depth=150,
 	 x=x, y=y,
 	 parent = parent,
-	 sheet = animation.sheet(0, 0, 20, 16, iwidth, iheight, 7),
       }
-      o.frame = o.sheet[1]
+
       setmetatable(o, self)
       self.__index = self
       return o
@@ -62,8 +62,8 @@ local white = {
    end,
 
    draw = function (self, x, y)
-      local frame = self.sheet[
-	 math.ceil(self.parent.statetime * 2)] or self.sheet[1]
+      local frame = white_sheet[math.ceil(self.parent.statetime * 2)]
+	 or white_sheet[1]
       love.graphics.draw(img, frame,
 			 math.floor(x), math.floor(y),
 			 0, 1, 1, 7, 7)
@@ -72,6 +72,7 @@ local white = {
    end
 }
 
+local yolk_sheet = animation.sheet(0, 16, 20, 16, iwidth, iheight, 10, 3)
 yolk = {
    anim = {
       idle = {1, speed=0},
@@ -84,7 +85,6 @@ yolk = {
 	 depth=100,
 	 x=x, y=y,
 	 dx=0, dy=0,
-	 sheet = animation.sheet(0, 16, 20, 16, iwidth, iheight, 10, 3),
 	 anim = yolk.anim.idle,
 	 statetime = 0,
 	 sendbox = { size = 3, },
@@ -134,11 +134,11 @@ yolk = {
    end,
 
    draw = function (self,x,y)
-      local frame = self.sheet[self.anim[math.ceil(self.statetime)]]
+      local frame = yolk_sheet[self.anim[math.ceil(self.statetime)]]
 
       if not frame then
 	 self.anim = yolk.anim.idle
-	 frame = self.sheet[1]
+	 frame = yolk_sheet[1]
 	 self.statetime = 0
       end
 
