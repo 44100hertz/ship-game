@@ -112,7 +112,7 @@ yolk = {
       if input.dl > 0 then self.dx = self.dx - 0.5 end
       if input.dr > 0 then self.dx = self.dx + 0.5 end
 
-      -- Momentum
+      -- Movement and hitbox positions
       self.dx = self.dx * 0.75
       self.dy = self.dy * 0.75
       self.x = self.x + self.dx
