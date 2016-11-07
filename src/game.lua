@@ -3,6 +3,7 @@ local sprites = {}
 
 -- Functions for manipulating tables
 sprite = {
+   scroll = 0,
    add = function (parent, newsprite, x, y)
       local index = table.getn(sprites) + 1
       sprites[index] = {} -- Fixes issue with :new calling sprites.add
@@ -20,13 +21,14 @@ local collideswith = function (send, recv)
    return (size > dist)
 end
 
-local scroll = 0
+
+local bg = love.graphics.newImage("img/bg.png")
 return {
    update = function ()
       -- Update all sprite states
       for _,v in ipairs(sprites) do
 	 v:update()
-	 v.offscreen = (v.x-scroll > 260 or v.x-scroll < -20 or
+	 v.offscreen = (v.x-sprite.scroll > 260 or v.x-sprite.scroll < -20 or
 			   v.y > 260 or v.y < -20)
       end
 
@@ -46,7 +48,7 @@ return {
       end
 
       -- TODO: add visscroll for when video is separate
-      scroll = scroll + 0.25
+      sprite.scroll = sprite.scroll + 0.25
    end,
 
    draw = function ()
@@ -56,6 +58,6 @@ return {
 		    return (o1.depth > o2.depth)
 		 end
       )
-      for _,v in ipairs(sprites) do v:draw(v.x - scroll, v.y) end
+      for _,v in ipairs(sprites) do v:draw(v.x - sprite.scroll, v.y) end
    end,
 }

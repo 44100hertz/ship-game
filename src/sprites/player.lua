@@ -99,23 +99,29 @@ yolk = {
    end,
 
    update = function (self)
-      -- Movement and hitbox positions
-      self.dx = self.dx * 0.75
-      self.dy = self.dy * 0.75
-      self.x = self.x + self.dx
-      self.y = self.y + self.dy
-
       -- Shooting
       if input.b > 0 and self.anim == yolk.anim.idle then
 	 sprite.add(self, bullet, self.x, self.y)
 	 self.statetime = 0
 	 self.anim = yolk.anim.shoot
       end
+
       -- Movement
       if input.dd > 0 then self.dy = self.dy + 0.5 end
       if input.du > 0 then self.dy = self.dy - 0.5 end
       if input.dl > 0 then self.dx = self.dx - 0.5 end
       if input.dr > 0 then self.dx = self.dx + 0.5 end
+
+      if self.x < sprite.scroll then
+	 self.x = sprite.scroll
+	 if self.dx < 0 then self.dx = 0 end
+      end
+
+      -- Movement and hitbox positions
+      self.dx = self.dx * 0.75
+      self.dy = self.dy * 0.75
+      self.x = self.x + self.dx
+      self.y = self.y + self.dy
 
       -- Hitboxes
       self.sendbox.x = self.x
