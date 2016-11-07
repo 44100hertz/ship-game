@@ -1,9 +1,12 @@
 local img = love.graphics.newImage("img/player.png")
 local iwidth, iheight = img:getDimensions()
+local sound_shoot = love.audio.newSource("sound/playershot.wav", "static")
 
 local bullet_sheet = animation.sheet(0, 80, 8, 8, iwidth, iheight, 3)
 local bullet = {
    new = function (self, x, y, parent)
+      love.audio.stop(sound_shoot)
+      love.audio.play(sound_shoot)
       local o = {
 	 depth = 125,
 	 x=x, y=y,
