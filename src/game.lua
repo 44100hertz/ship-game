@@ -15,10 +15,14 @@ sprite.add(nil, require "sprites/player", 40, 40)
 
 -- Basic a^2 + b^2 = c^2 circle collision
 local collideswith = function (send, recv)
-   local sq = function(x) return x*x end
-   local size = sq(send.size + recv.size)
-   local dist = sq(send.x-recv.x) + sq(send.y-recv.y)
-   return (size > dist)
+   if type(send) == "table" and type(recv) == "table" then
+      local sq = function(x) return x*x end
+      local size = sq(send.size + recv.size)
+      local dist = sq(send.x-recv.x) + sq(send.y-recv.y)
+      return (size > dist)
+   elseif type(send) == "function" then
+      return send(recv)
+   end
 end
 
 return {
