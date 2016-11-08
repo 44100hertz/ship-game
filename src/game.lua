@@ -1,18 +1,18 @@
--- Table of all game sprite
-local sprites = {}
+-- Table of all game actor
+local actors = {}
 
 -- Functions for manipulating tables
-sprite = {
+actor = {
    scroll = 0,
-   add = function (parent, newsprite, x, y)
-      local index = table.getn(sprites) + 1
-      sprites[index] = {} -- Fixes issue with :new calling sprites.add
-      sprites[index] = newsprite:new(x, y, parent)
+   add = function (parent, newactor, x, y)
+      local index = table.getn(actors) + 1
+      actors[index] = {} -- Fixes issue with :new calling actors.add
+      actors[index] = newactor:new(x, y, parent)
    end,
 }
 
-sprite.add(nil, require "sprites/player", 40, 40)
-sprite.add(nil, require "sprites/test", 200, 40)
+actor.add(nil, require "actors/player", 40, 40)
+actor.add(nil, require "actors/test", 200, 40)
 
 -- Basic a^2 + b^2 = c^2 circle collision
 local collideswith = function (send, recv)
@@ -28,16 +28,16 @@ end
 
 return {
    update = function ()
-      -- Update all sprite states
-      for _,v in ipairs(sprites) do
+      -- Update all actor states
+      for _,v in ipairs(actors) do
 	 v:update()
-	 v.offscreen = (v.x-sprite.scroll > 260 or v.x-sprite.scroll < -20 or
+	 v.offscreen = (v.x-actor.scroll > 260 or v.x-actor.scroll < -20 or
 			   v.y > 260 or v.y < -20)
       end
 
       -- Check all hitboxes
-      for irecv,recv in ipairs(sprites) do
-	 for isend,send in ipairs(sprites) do
+      for irecv,recv in ipairs(actors) do
+	 for isend,send in ipairs(actors) do
 	    if recv.enemy ~= send.enemy and
 	       irecv ~= isend and
 	       recv.recvbox and send.sendbox and
@@ -47,21 +47,21 @@ return {
 	 end
       end
 
-      for k,v in ipairs(sprites) do
-	 if v.despawn then table.remove(sprites, k) end
+      for k,v in ipairs(actors) do
+	 if v.despawn then table.remove(actors, k) end
       end
 
       -- TODO: add visscroll for when video is separate
-      sprite.scroll = sprite.scroll + 0.25
+      actor.scroll = actor.scroll + 0.25
    end,
 
    draw = function ()
       -- Passes x and y to self for scrolling...todo
-      table.sort(sprites,
+      table.sort(actors,
 		 function (o1, o2)
 		    return (o1.depth > o2.depth)
 		 end
       )
-      for _,v in ipairs(sprites) do v:draw(v.x - sprite.scroll, v.y) end
+      for _,v in ipairs(actors) do v:draw(v.x - actor.scroll, v.y) end
    end,
 }
