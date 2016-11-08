@@ -76,19 +76,21 @@ local white = {
 }
 
 local yolk_sheet = animation.sheet(0, 16, 20, 16, iwidth, iheight, 10, 3)
-yolk = {
+local yolk_anim = {
+   idle = {1, speed=0},
+   shoot = {2, 3, 4, 5, 6, 7, speed=0.33},
+   hurt = {11, 12, 13, 14, 15, speed=0.5},
+   blink = {25, 24, 23, 22, speed=0.25},
+}
+local yolk = {
    anim = {
-      idle = {1, speed=0},
-      shoot = {2, 3, 4, 5, 6, 7, speed=0.33},
-      hurt = {11, 12, 13, 14, 15, speed=0.5},
-      blink = {25, 24, 23, 22, speed=0.25},
    },
    new = function (self, x, y)
       local o = {
 	 depth=100,
 	 x=x, y=y,
 	 dx=0, dy=0,
-	 anim = yolk.anim.idle,
+	 anim = yolk_anim.idle,
 	 statetime = 0,
 	 sendbox = { size = 3, },
 	 recvbox = { size = 4, },
@@ -103,10 +105,10 @@ yolk = {
 
    update = function (self)
       -- Shooting
-      if input.b > 0 and self.anim == yolk.anim.idle then
+      if input.b > 0 and self.anim == yolk_anim.idle then
 	 sprite.add(self, bullet, self.x, self.y)
 	 self.statetime = 0
-	 self.anim = yolk.anim.shoot
+	 self.anim = yolk_anim.shoot
       end
 
       -- Movement
@@ -140,7 +142,7 @@ yolk = {
       local frame = yolk_sheet[self.anim[math.ceil(self.statetime)]]
 
       if not frame then
-	 self.anim = yolk.anim.idle
+	 self.anim = yolk_anim.idle
 	 frame = yolk_sheet[1]
 	 self.statetime = 0
       end
