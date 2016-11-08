@@ -12,6 +12,7 @@ sprite = {
 }
 
 sprite.add(nil, require "sprites/player", 40, 40)
+sprite.add(nil, require "sprites/test", 200, 40)
 
 -- Basic a^2 + b^2 = c^2 circle collision
 local collideswith = function (send, recv)
@@ -37,7 +38,8 @@ return {
       -- Check all hitboxes
       for irecv,recv in ipairs(sprites) do
 	 for isend,send in ipairs(sprites) do
-	    if irecv ~= isend and
+	    if recv.enemy ~= send.enemy and
+	       irecv ~= isend and
 	       recv.recvbox and send.sendbox and
 	    collideswith(recv.recvbox, send.sendbox) then
 	       recv:collide(send)
