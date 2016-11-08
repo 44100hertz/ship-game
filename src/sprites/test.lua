@@ -1,4 +1,5 @@
 local img = love.graphics.newImage("img/testcirc.png")
+img:setFilter("nearest", "nearest")
 
 test = {
    new = function (self, x, y)
@@ -19,7 +20,7 @@ test = {
 
    draw = function (self,x,y)
       love.graphics.draw(
-	 img, math.floor(x), math.floor(y),
+	 img, x, y,
 	 0, 1, 1, 24, 24
       )
    end,

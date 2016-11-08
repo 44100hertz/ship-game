@@ -1,4 +1,5 @@
 local img = love.graphics.newImage("img/player.png")
+img:setFilter("nearest", "nearest")
 local iwidth, iheight = img:getDimensions()
 local sound_shoot = love.audio.newSource("sound/playershot.wav", "static")
 
@@ -32,15 +33,15 @@ local bullet = {
 
    draw = function (self, x, y)
       love.graphics.draw(
-	 img, bullet_sheet[1], math.floor(x), math.floor(y),
+	 img, bullet_sheet[1], x, y,
 	 0, 1, 1, 4, 4)
       love.graphics.draw(
 	 img, bullet_sheet[2],
-	 math.floor(x-self.dx), math.floor(y-self.dy),
+	 x-self.dx, y-self.dy,
 	 0, 1, 1, 4, 4)
       love.graphics.draw(
 	 img, bullet_sheet[3],
-	 math.floor(x-self.dx*2), math.floor(y-self.dy*2),
+	 x-self.dx*2, y-self.dy*2,
 	 0, 1, 1, 4, 4)
    end,
 
@@ -62,13 +63,14 @@ local white = {
    end,
 
    update = function (self)
+      self.despawn = self.parent.despawn
    end,
 
    draw = function (self, x, y)
       local frame = white_sheet[math.ceil(self.parent.statetime * 2)]
 	 or white_sheet[1]
       love.graphics.draw(img, frame,
-			 math.floor(x), math.floor(y),
+			 x, y,
 			 0, 1, 1, 7, 7)
       self.x = self.parent.x
       self.y = self.parent.y
@@ -148,11 +150,16 @@ local yolk = {
       end
 
       love.graphics.draw(
-	 img, frame, math.floor(x), math.floor(y),
+	 img, frame, x, y,
 	 0, 1, 1, 7, 7)
    end,
 
    collide = function (self, with)
+      if with.enemy then
+	 self.despawn = true
+	 self.update = function (self)
+	 end
+      end
    end
 }
 
