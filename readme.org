@@ -13,21 +13,21 @@ A game concept for my learning.
  - Provides global main.loadstate(<module>) to load in a new module
  - draw() callback expected to return a canvas
 
-** TODO game
- - returns module to be loaded by main
- - keeps list of actors, runs callbacks on them
- - global functions:
-   - actor.add(parent,actor,x,y) :: add an actor to the game
-   - actor.signal(actor, code) :: send an actor a signal
-
-** TODO actors
- - a type of table stored by game
-   - new() :: return a new actor. used in actors.add
+** actors
+ A table stored by game, not an actual type for inheritance
+*** general
+   - new() :: return a new actor. used in actors.add()
    - update() :: advance actor state by a frame
-   - draw(x,y) :: draw at given coords using internal actor vals.
+   - class :: string id for various stuff. "p1" "p2" and "enemy" is common. One id type will not collide with another, for example.
+   - despawn :: if true, object is removed on next update
+*** drawing
+   - depth :: depth of object for drawing. Higher = later in draw order.
+   - x,y :: position, transformed by drawing routines to account for scrolling
+   - dx,dy :: optional, used for movement and on high fps draw
+   - draw(x,y) :: draw this actor at these screen space (not game space) coords
+*** collisions
+   - sendbox = {x, y, size} :: collision box for others to use
+   - recvbox = {x, y, size} :: collision for this. Requires collide(actor)
+   - sendbox = function (recvbox) :: special collision function for non-circular
    - collide(actor) :: react to being collided with by given actor.
-   - tangible :: true if occupies space
-   - recvbox :: x,y,size circular collision box
-   - sendbox :: x,y,size circular collision box
    - damage :: a damage value to be read in for collision on player, etc.
-   - x,y :: position. Used by draw.
