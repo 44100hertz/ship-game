@@ -14,7 +14,6 @@ main = {
 }
 
 local canvas = love.graphics.newCanvas()
-canvas:setFilter("nearest", "nearest")
 
 love.run = function ()
    love.math.setRandomSeed(os.time())

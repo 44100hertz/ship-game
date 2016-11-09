@@ -1,3 +1,5 @@
+love.graphics.setDefaultFilter("nearest","nearest")
+
 -- Table of all game actor
 local actors = {}
 
