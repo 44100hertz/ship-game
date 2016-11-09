@@ -1,10 +1,13 @@
 input = require "input"
 animation = require "animation"
+game = require "game"
 
 local quit = false
+local state
 main = {
    loadstate = function (mod)
       state = mod
+      state.init()
    end,
 }
 

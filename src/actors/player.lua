@@ -100,7 +100,7 @@ local yolk = {
       setmetatable(o, self)
       self.__index = self
 
-      actor.add(o, white, x, y)
+      game.addactor(o, white, x, y)
 
       return o
    end,
@@ -108,7 +108,7 @@ local yolk = {
    update = function (self)
       -- Shooting
       if input.b > 0 and self.anim == yolk_anim.idle then
-	 actor.add(self, bullet, self.x, self.y)
+	 game.addactor(self, bullet, self.x, self.y)
 	 self.statetime = 0
 	 self.anim = yolk_anim.shoot
       end
@@ -126,8 +126,8 @@ local yolk = {
       self.y = self.y + self.dy
 
       -- Screen limits
-      self.x = math.max(self.x, actor.scroll)
-      self.x = math.min(self.x, actor.scroll+240)
+      self.x = math.max(self.x, game.scroll)
+      self.x = math.min(self.x, game.scroll+240)
       self.y = math.max(self.y, 0)
       self.y = math.min(self.y, 160)
 
