@@ -2,6 +2,8 @@ input = require "input"
 animation = require "animation"
 game = require "game"
 
+love.graphics.setDefaultFilter("nearest", "nearest")
+
 local quit = false
 local state
 main = {

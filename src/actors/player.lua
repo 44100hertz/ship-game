@@ -1,5 +1,4 @@
 local img = love.graphics.newImage("img/player.png")
-img:setFilter("nearest", "nearest")
 local iwidth, iheight = img:getDimensions()
 local sound_shoot = love.audio.newSource("sound/playershot.wav", "static")
 

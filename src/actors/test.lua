@@ -1,5 +1,4 @@
 local img = love.graphics.newImage("img/testcirc.png")
-img:setFilter("nearest", "nearest")
 
 test = {
    new = function (self, x, y)
