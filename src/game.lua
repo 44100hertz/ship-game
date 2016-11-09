@@ -5,9 +5,16 @@ local game = {
    scroll = 0
 }
 
+local cateye = require "actors/cateye"
+
 game.init = function ()
+   game.addactor(nil, cateye, 80, 40)
+   game.addactor(nil, cateye, 100, 120)
+   game.addactor(nil, cateye, 120, 40)
+   game.addactor(nil, cateye, 140, 120)
+   game.addactor(nil, cateye, 160, 40)
+   game.addactor(nil, cateye, 180, 120)
    game.addactor(nil, require "actors/player", 40, 40)
-   game.addactor(nil, require "actors/test", 200, 40)
 end
 
 game.addactor = function (parent, newactor, x, y)
@@ -23,8 +30,6 @@ local collideswith = function (send, recv)
       local size = sq(send.size + recv.size)
       local dist = sq(send.x-recv.x) + sq(send.y-recv.y)
       return (size > dist)
-   elseif type(send) == "function" then
-      return send(recv)
    end
 end
 
@@ -49,7 +54,7 @@ game.update = function ()
    end
 
    -- TODO: add visscroll for when video is separate
-   game.scroll = game.scroll + 0.25
+   -- game.scroll = game.scroll + 0.25
 end
 
 game.draw = function ()
