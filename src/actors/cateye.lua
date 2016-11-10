@@ -2,6 +2,36 @@ local img = love.graphics.newImage("img/cateye.png")
 local iwidth, iheight = img:getDimensions()
 local sheet = animation.sheet(0,0,16,16,iwidth,iheight,4)
 
+local dead_cateye = {
+   new = function (self, x, y)
+      local o = {
+	 x=x, y=y,
+	 statetime = 0,
+	 depth = 105,
+	 beamsize = 5,
+      }
+      setmetatable(o, self)
+      self.__index = self
+
+      return o
+   end,
+
+   update = function (self)
+      self.statetime = self.statetime + 1
+      if self.statetime == 5 then self.despawn = true end
+   end,
+
+   draw = function (self, x, y)
+      love.graphics.setColor(0, 0, 0)
+      local beamwidth = 5 - self.statetime
+      local beamx = x - beamwidth/2 + 1.5
+      love.graphics.rectangle(
+	 "fill", beamx, 0, beamwidth, 160
+      )
+      love.graphics.setColor(255, 255, 255)
+   end
+}
+
 local anim = {
    idle = {1, speed=0},
    blink = {2, 3, 4, speed=0.5}
@@ -16,11 +46,11 @@ local cateye = {
 	 depth = 105,
 	 recvbox = {
 	    shape = "field",
-	    xoff=0, yoff=0, width=2, height=8, skew=0,
+	    xoff=1, yoff=0, width=4, height=10, skew=0,
 	 },
 	 sendbox = {
 	    shape = "field",
-	    xoff=0, yoff=0, width=2, height=1000, skew=0,
+	    xoff=1, yoff=0, width=4, height=1000, skew=0,
 	 },
 	 beamtime = 0,
       }
@@ -59,7 +89,11 @@ local cateye = {
    end,
 
    collide = function (self, with)
-      if with.class == "player" then self.despawn = true end
+      if with.class == "player" then
+	 game.addactor(nil, dead_cateye, self.x, self.y)
+	 effect.asplode(self.x, self.y)
+	 self.despawn = true
+      end
    end,
 }
 
