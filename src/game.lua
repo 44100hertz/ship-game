@@ -1,3 +1,5 @@
+require "effect"
+
 love.graphics.setDefaultFilter("nearest","nearest")
 
 -- Table of all game actor
@@ -16,7 +18,7 @@ game.init = function ()
    game.addactor(nil, cateye, 140, 120)
    game.addactor(nil, cateye, 160, 40)
    game.addactor(nil, cateye, 180, 120)
-   game.addactor(nil, require "actors/player", 40, 40)
+   game.addactor(nil, require "actors/player", 40, 80)
 end
 
 game.addactor = function (parent, newactor, x, y)
@@ -67,9 +69,6 @@ local collideswith = function (send, recv)
 end
 
 game.update = function ()
-   -- Update all actor states
-   for _,v in ipairs(actors) do v:update() end
-
    -- Check all hitboxes
    for irecv,recv in ipairs(actors) do
       if recv.recvbox then
@@ -92,10 +91,14 @@ game.update = function ()
       if v.despawn then table.remove(actors, k) end
    end
 
+      -- Update all actor states
+   for _,v in ipairs(actors) do v:update() end
+
    -- TODO: add visscroll for when video is separate
    -- game.scroll = game.scroll + 0.25
 end
 
+local particleCanvas = love.graphics.newCanvas()
 game.draw = function ()
    -- Passes x and y to self for scrolling...todo
    table.sort(actors,
@@ -103,6 +106,8 @@ game.draw = function ()
 		 return (o1.depth > o2.depth)
 	      end
    )
+   particleCanvas:renderTo( function () effect.draw() end )
+   love.graphics.draw(particleCanvas)
    for _,v in ipairs(actors) do v:draw(v.x - game.scroll, v.y) end
 end
 
