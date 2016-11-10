@@ -106,8 +106,7 @@ game.draw = function ()
 		 return (o1.depth > o2.depth)
 	      end
    )
-   particleCanvas:renderTo( function () effect.draw() end )
-   love.graphics.draw(particleCanvas)
+   effect.draw()
    for _,v in ipairs(actors) do v:draw(v.x - game.scroll, v.y) end
 end
 

@@ -13,9 +13,10 @@ effect.asplode = function (x, y, color, size)
    }
    splode.drawable = splode.particle
 
+   splode.particle:setBufferSize(10)
    splode.particle:setParticleLifetime(5)
-   splode.particle:setLinearAcceleration(-20, -20, 20, 20)
-   splode.particle:setRadialAcceleration(10)
+   splode.particle:setSpeed(20,40)
+   splode.particle:setSpread(math.pi*2)
    splode.particle:setEmissionRate(100)
    effects[table.getn(effects)+1] = splode
 end
