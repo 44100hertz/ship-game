@@ -25,13 +25,50 @@ game.addactor = function (parent, newactor, x, y)
    actors[index] = newactor:new(x, y, parent)
 end
 
--- Basic a^2 + b^2 = c^2 circle collision
 local collideswith = function (send, recv)
-   if type(send) == "table" and type(recv) == "table" then
-      local sq = function(x) return x*x end
-      local size = sq(send.size + recv.size)
-      local dist = sq(send.x-recv.x) + sq(send.y-recv.y)
+   local sq = function(x) return x*x end
+
+   -- a^2 + b^2 < c^2
+   local circle_circle = function (c1, c2)
+      local size = sq(c1.size + c2.size)
+      local dist = sq(c1.x-c2.x) + sq(c1.y-c2.y)
       return (size > dist)
+   end
+
+   -- Rectangle collisions
+   local field_field = function (f1, f2)
+      -- Check x first, it's easier
+      local distx = f1.x - f2.x
+      local sizex = f1.width + f2.width
+      if math.abs(distx) < sizex then return true end
+
+      local skewdist = (f1.skew + f2.skew) * distx
+      local disty = math.abs(f1.y - f2.y) + math.abs(skewdist)
+      local sizey = f1.height + f2.height
+      if disty < sizey then return true end
+
+      return false
+   end
+
+   -- Treat a circle like a field.
+   -- This makes corner collisions not work right. Avoid those.
+   local circle_field = function (c, f)
+      local circ2field = {
+	 x = c.x, y = c.y,
+	 width = c.size, height = c.size,
+	 skew = 0,
+      }
+      return field_field(circ2field, f)
+   end
+
+   if send.type == "circle" and recv.type == "circle" then
+      return cirrcle_circle(send, recv)
+   elseif send.type == "field" and recv.type == "circle" then
+      return field_circle(send, recv)
+   elseif send.type == "circle" and recv.type == "field" then
+      return field_circle(recv, send)
+   elseif send.type == "field" and recv.type == "field" then
+      return field_field(recv, send)
    end
 end
 
@@ -43,7 +80,6 @@ game.update = function ()
    for irecv,recv in ipairs(actors) do
       for isend,send in ipairs(actors) do
 	 if recv.enemy ~= send.enemy and
-	    irecv ~= isend and
 	    recv.recvbox and send.sendbox and
 	 collideswith(recv.recvbox, send.sendbox) then
 	    recv:collide(send)
