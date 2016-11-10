@@ -19,6 +19,7 @@ game.init = function ()
    game.addactor(nil, cateye, 160, 40)
    game.addactor(nil, cateye, 180, 120)
    game.addactor(nil, require "actors/player", 40, 80)
+   game.addactor(nil, require "actors/bg")
 end
 
 game.addactor = function (parent, newactor, x, y)
@@ -94,7 +95,7 @@ game.update = function ()
    for _,v in ipairs(actors) do v:update() end
 
    -- TODO: add visscroll for when video is separate
-   -- game.scroll = game.scroll + 0.25
+   game.scroll = game.scroll + 0.25
 end
 
 game.draw = function ()
@@ -104,9 +105,12 @@ game.draw = function ()
 		 return (o1.depth > o2.depth)
 	      end
    )
-   effect.draw()
-   for _,v in ipairs(actors) do v:draw(
-	 math.floor(v.x - game.scroll + 0.5), math.floor(v.y + 0.5)) end
+   effect.draw(game.scroll)
+   for _,v in ipairs(actors) do
+      if v.draw then
+	 v:draw(math.floor(v.x - game.scroll + 0.5), math.floor(v.y + 0.5))
+      end
+   end
 end
 
 return game

@@ -129,8 +129,6 @@ local yolk = {
       -- Screen limits
       self.x = math.max(self.x, game.scroll)
       self.x = math.min(self.x, game.scroll+240)
-      self.y = math.max(self.y, 0)
-      self.y = math.min(self.y, 160)
 
       self.statetime = self.statetime + self.anim.speed
    end,

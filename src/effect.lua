@@ -21,10 +21,10 @@ effect.asplode = function (x, y, color, size)
    effects[table.getn(effects)+1] = splode
 end
 
-effect.draw = function ()
+effect.draw = function (scroll)
    for k,v in ipairs(effects) do
       if v.particle then v.particle:update(0.1) end
-      love.graphics.draw(v.drawable, v.x, v.y)
+      love.graphics.draw(v.drawable, v.x-scroll, v.y)
       if v.age == 50 then table.remove(effects, k) end
       v.age = v.age + 1
    end
