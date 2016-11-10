@@ -148,7 +148,10 @@ local yolk = {
    end,
 
    collide = function (self, with)
-      if with.class == "enemy" then self.despawn = true end
+      if with.class == "enemy" then
+	 game.shake = 40
+	 self.despawn = true
+      end
    end
 }
 

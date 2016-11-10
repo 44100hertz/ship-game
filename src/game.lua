@@ -11,13 +11,15 @@ local game = {
 
 local cateye = require "actors/cateye"
 
+game.shake = 0
+
 game.init = function ()
-   game.addactor(nil, cateye, 80, 40)
-   game.addactor(nil, cateye, 100, 120)
-   game.addactor(nil, cateye, 120, 40)
-   game.addactor(nil, cateye, 140, 120)
-   game.addactor(nil, cateye, 160, 40)
-   game.addactor(nil, cateye, 180, 120)
+   game.addactor(nil, cateye, 180, 40)
+   game.addactor(nil, cateye, 200, 120)
+   game.addactor(nil, cateye, 220, 40)
+   game.addactor(nil, cateye, 240, 120)
+   game.addactor(nil, cateye, 260, 40)
+   game.addactor(nil, cateye, 280, 120)
    game.addactor(nil, require "actors/player", 40, 80)
    game.addactor(nil, require "actors/bg")
 end
@@ -96,6 +98,8 @@ game.update = function ()
 
    -- TODO: add visscroll for when video is separate
    game.scroll = game.scroll + 0.25
+
+   game.shake = (game.shake > 1) and game.shake-1 or 0
 end
 
 game.draw = function ()
@@ -107,8 +111,10 @@ game.draw = function ()
    )
    effect.draw(game.scroll)
    for _,v in ipairs(actors) do
+      local shake = game.shake * ((game.shake % 2) - 0.5)
       if v.draw then
-	 v:draw(math.floor(v.x - game.scroll + 0.5), math.floor(v.y + 0.5))
+	 v:draw(math.floor(v.x - game.scroll + 0.5),
+		math.floor(v.y + 0.5 + shake))
       end
    end
 end
