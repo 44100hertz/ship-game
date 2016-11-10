@@ -1,6 +1,8 @@
 local img = love.graphics.newImage("img/player.png")
 local iwidth, iheight = img:getDimensions()
 local sound_shoot = love.audio.newSource("sound/playershot.wav", "static")
+local sound_die = love.audio.newSource("sound/playerdie.wav", "static")
+local sound_asplode = love.audio.newSource("sound/asplode.wav", "static")
 
 local bullet_sheet = animation.sheet(0, 80, 8, 8, iwidth, iheight, 3)
 local bullet = {
@@ -24,7 +26,7 @@ local bullet = {
    update = function (self)
       self.x = self.x + self.dx
       self.y = self.y + self.dy
-      self.despawn = (self.x > game.scroll+256 or self.y < -64 or self.y > 160+64)
+      self.despawn = (self.x > game.scroll+256)
    end,
 
    draw = function (self, x, y)
@@ -149,6 +151,8 @@ local yolk = {
 
    collide = function (self, with)
       if with.class == "enemy" then
+	 love.audio.play(sound_asplode)
+	 love.audio.play(sound_die)
 	 game.shake = 40
 	 effect.asplode(self.x, self.y, 167, 80, 99, 5, 100)
 	 self.despawn = true

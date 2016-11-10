@@ -2,6 +2,8 @@ local img = love.graphics.newImage("img/cateye.png")
 local iwidth, iheight = img:getDimensions()
 local sheet = animation.sheet(0,0,16,16,iwidth,iheight,4)
 
+local sound_asplode = love.audio.newSource("sound/lilasplode.wav")
+
 local dead_cateye = {
    new = function (self, x, y)
       local o = {
@@ -90,6 +92,8 @@ local cateye = {
 
    collide = function (self, with)
       if with.class == "player" then
+	 love.audio.stop(sound_asplode)
+	 love.audio.play(sound_asplode)
 	 game.addactor(nil, dead_cateye, self.x, self.y)
 	 effect.asplode(self.x, self.y, 0, 0, 0, 4)
 	 self.despawn = true
