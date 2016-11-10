@@ -112,15 +112,17 @@ local yolk = {
 	 self.anim = yolk_anim.shoot
       end
 
-      -- Movement
+      -- Player Movement
       if input.dd > 0 then self.dy = self.dy + 0.5 end
       if input.du > 0 then self.dy = self.dy - 0.5 end
       if input.dl > 0 then self.dx = self.dx - 0.5 end
       if input.dr > 0 then self.dx = self.dx + 0.5 end
 
-      -- Movement and hitbox positions
+      -- Momentum
       self.dx = self.dx * 0.75
       self.dy = self.dy * 0.75
+      if math.abs(self.dx) < 0.1 then self.dx = 0 end
+      if math.abs(self.dy) < 0.1 then self.dy = 0 end
       self.x = self.x + self.dx
       self.y = self.y + self.dy
 

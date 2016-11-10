@@ -107,7 +107,8 @@ game.draw = function ()
 	      end
    )
    effect.draw()
-   for _,v in ipairs(actors) do v:draw(v.x - game.scroll, v.y) end
+   for _,v in ipairs(actors) do v:draw(
+	 math.floor(v.x - game.scroll + 0.5), math.floor(v.y + 0.5)) end
 end
 
 return game
