@@ -17,13 +17,13 @@ local dead_cateye = {
    end,
 
    update = function (self)
-      self.statetime = self.statetime + 1
+      self.statetime = self.statetime + 0.5
       if self.statetime == 5 then self.despawn = true end
    end,
 
    draw = function (self, x, y)
       love.graphics.setColor(0, 0, 0)
-      local beamwidth = 5 - self.statetime
+      local beamwidth = 5 - math.floor(self.statetime)
       local beamx = x - beamwidth/2 + 1.5
       love.graphics.rectangle(
 	 "fill", beamx, 0, beamwidth, 160
