@@ -24,7 +24,7 @@ local bullet = {
    update = function (self)
       self.x = self.x + self.dx
       self.y = self.y + self.dy
-      self.despawn = self.offscreen
+      self.despawn = (self.x > game.scroll+256 or self.y < -64 or self.y > 160+64)
    end,
 
    draw = function (self, x, y)
@@ -150,6 +150,7 @@ local yolk = {
    collide = function (self, with)
       if with.class == "enemy" then
 	 game.shake = 40
+	 effect.asplode(self.x, self.y, 245, 89, 123, 5, 100)
 	 self.despawn = true
       end
    end

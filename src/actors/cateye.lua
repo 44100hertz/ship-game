@@ -91,7 +91,7 @@ local cateye = {
    collide = function (self, with)
       if with.class == "player" then
 	 game.addactor(nil, dead_cateye, self.x, self.y)
-	 effect.asplode(self.x, self.y)
+	 effect.asplode(self.x, self.y, 0, 0, 0, 4)
 	 self.despawn = true
       end
    end,
