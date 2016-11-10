@@ -13,8 +13,8 @@ local bullet = {
 	 x=x, y=y,
 	 dx = parent.dx + 3,
 	 dy = parent.dy,
-	 sendbox = {shape = "circle", size = 3, xoff = 0, yoff = 0},
-	 recvbox = {shape = "circle", size = 3, xoff = 0, yoff = 0},
+	 sendbox = {shape = "circle", size = 2, xoff = 0, yoff = 0},
+	 recvbox = {shape = "circle", size = 2, xoff = 0, yoff = 0},
       }
       setmetatable(o, self)
       self.__index = self
@@ -41,7 +41,9 @@ local bullet = {
 	 0, 1, 1, 4, 4)
    end,
 
-   collide = function (self) end
+   collide = function (self, with)
+      self.despawn = true
+   end
 }
 
 local white_sheet = animation.sheet(0, 0, 20, 16, iwidth, iheight, 7)
@@ -92,7 +94,7 @@ local yolk = {
 	 anim = yolk_anim.idle,
 	 statetime = 0,
 	 sendbox = { shape="circle", size = 3, xoff=0, yoff=0},
-	 recvbox = { shape="circle", size = 4, xoff=0, yoff=0},
+	 recvbox = { shape="circle", size = 3, xoff=0, yoff=0},
       }
       setmetatable(o, self)
       self.__index = self
@@ -146,6 +148,7 @@ local yolk = {
    end,
 
    collide = function (self, with)
+      if with.class == "enemy" then self.despawn = true end
    end
 }
 

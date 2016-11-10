@@ -15,12 +15,12 @@ local cateye = {
 	 statetime = 0,
 	 depth = 105,
 	 recvbox = {
-	    shape = "circle",
-	    xoff=0, yoff=0, size=8,
+	    shape = "field",
+	    xoff=0, yoff=0, width=2, height=8, skew=0,
 	 },
 	 sendbox = {
 	    shape = "field",
-	    xoff=0, yoff=0, width=3, height=1000, skew=0,
+	    xoff=0, yoff=0, width=2, height=1000, skew=0,
 	 },
 	 beamtime = 0,
       }
@@ -59,6 +59,7 @@ local cateye = {
    end,
 
    collide = function (self, with)
+      if with.class == "player" then self.despawn = true end
    end,
 }
 
