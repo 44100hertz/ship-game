@@ -13,7 +13,7 @@ main = {
    end,
 }
 
-local canvas = love.graphics.newCanvas()
+local canvas = love.graphics.newCanvas(240, 160)
 
 love.run = function ()
    love.math.setRandomSeed(os.time())
