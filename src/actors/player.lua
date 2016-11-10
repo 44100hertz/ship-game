@@ -150,7 +150,7 @@ local yolk = {
    collide = function (self, with)
       if with.class == "enemy" then
 	 game.shake = 40
-	 effect.asplode(self.x, self.y, 245, 89, 123, 5, 100)
+	 effect.asplode(self.x, self.y, 167, 80, 99, 5, 100)
 	 self.despawn = true
       end
    end
