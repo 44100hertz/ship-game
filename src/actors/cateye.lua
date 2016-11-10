@@ -1,6 +1,6 @@
 local img = love.graphics.newImage("img/cateye.png")
 local iwidth, iheight = img:getDimensions()
-local sheet = animation.sheet(0,0,16,16,iwidth,iheight,4)
+local sheet = animation.sheet(0,0,16,16,iwidth,iheight,2,2)
 
 local sound_asplode = love.audio.newSource("sound/lilasplode.wav")
 
