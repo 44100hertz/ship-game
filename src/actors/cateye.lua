@@ -9,26 +9,26 @@ local anim = {
 local cateye = {
    new = function (self, x, y)
       local o = {
+	 class="enemy",
 	 x=x, y=y,
 	 anim = anim.idle,
 	 statetime = 0,
-	 beamtime = 0,
 	 depth = 105,
-	 enemy = true,
+	 recvbox = {
+	    shape = "circle",
+	    xoff=0, yoff=0, size=8,
+	 },
+	 sendbox = {
+	    shape = "field",
+	    xoff=0, yoff=0, width=3, height=1000, skew=0,
+	 },
+	 beamtime = 0,
       }
       setmetatable(o, self)
       self.__index = self
 
       return o
    end,
-
-   -- recvbox = function (self, recv)
-   --    if type(recv) ~= "table" then return false end
-
-   --    print("aoeu")
-   --    local dist = math.abs(self.x-recv.x)
-   --    return (dist <= recv.size)
-   -- end,
 
    update = function (self)
       if math.random() < 0.01 then
@@ -59,7 +59,6 @@ local cateye = {
    end,
 
    collide = function (self, with)
-      
    end,
 }
 

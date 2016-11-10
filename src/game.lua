@@ -40,14 +40,10 @@ local collideswith = function (send, recv)
       -- Check x first, it's easier
       local distx = f1.x - f2.x
       local sizex = f1.width + f2.width
-      if math.abs(distx) < sizex then return true end
-
-      local skewdist = (f1.skew + f2.skew) * distx
-      local disty = math.abs(f1.y - f2.y) + math.abs(skewdist)
+      local skewdist = distx * (f1.skew + f2.skew)
+      local disty = f1.y - f2.y
       local sizey = f1.height + f2.height
-      if disty < sizey then return true end
-
-      return false
+      return(math.abs(distx) < sizex and math.abs(disty)+skewdist < sizey)
    end
 
    -- Treat a circle like a field.
@@ -61,14 +57,12 @@ local collideswith = function (send, recv)
       return field_field(circ2field, f)
    end
 
-   if send.type == "circle" and recv.type == "circle" then
-      return cirrcle_circle(send, recv)
-   elseif send.type == "field" and recv.type == "circle" then
-      return field_circle(send, recv)
-   elseif send.type == "circle" and recv.type == "field" then
-      return field_circle(recv, send)
-   elseif send.type == "field" and recv.type == "field" then
-      return field_field(recv, send)
+   if send.shape == "circle" then
+      if recv.shape == "circle" then return circle_circle(send, recv) end
+      if recv.shape == "field"  then return circle_field(send, recv) end
+   elseif send.shape == "field" then
+      if recv.shape == "circle" then return circle_field(recv, send) end
+      if recv.shape == "field"  then return field_field(send, recv) end
    end
 end
 
@@ -78,11 +72,18 @@ game.update = function ()
 
    -- Check all hitboxes
    for irecv,recv in ipairs(actors) do
-      for isend,send in ipairs(actors) do
-	 if recv.enemy ~= send.enemy and
-	    recv.recvbox and send.sendbox and
-	 collideswith(recv.recvbox, send.sendbox) then
-	    recv:collide(send)
+      if recv.recvbox then
+	 for isend,send in ipairs(actors) do
+	    if send.sendbox and send.class ~= recv.class then
+	       recv.recvbox.x = recv.x + recv.recvbox.xoff
+	       recv.recvbox.y = recv.y + recv.recvbox.yoff
+	       send.sendbox.x = send.x + send.sendbox.xoff
+	       send.sendbox.y = send.y + send.sendbox.yoff
+
+	       if collideswith(recv.recvbox, send.sendbox) then
+		  recv:collide(send)
+	       end
+	    end
 	 end
       end
    end

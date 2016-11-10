@@ -8,12 +8,13 @@ local bullet = {
       love.audio.stop(sound_shoot)
       love.audio.play(sound_shoot)
       local o = {
+	 class = "player",
 	 depth = 125,
 	 x=x, y=y,
 	 dx = parent.dx + 3,
 	 dy = parent.dy,
-	 sendbox = {size = 3},
-	 recvbox = {size = 3},
+	 sendbox = {shape = "circle", size = 3, xoff = 0, yoff = 0},
+	 recvbox = {shape = "circle", size = 3, xoff = 0, yoff = 0},
       }
       setmetatable(o, self)
       self.__index = self
@@ -23,10 +24,6 @@ local bullet = {
    update = function (self)
       self.x = self.x + self.dx
       self.y = self.y + self.dy
-      self.sendbox.x = self.x
-      self.sendbox.y = self.y
-      self.recvbox.x = self.x
-      self.recvbox.y = self.y
       self.despawn = self.offscreen
    end,
 
@@ -88,13 +85,14 @@ local yolk = {
    },
    new = function (self, x, y)
       local o = {
+	 class = "player",
 	 depth=100,
 	 x=x, y=y,
 	 dx=0, dy=0,
 	 anim = yolk_anim.idle,
 	 statetime = 0,
-	 sendbox = { size = 3, },
-	 recvbox = { size = 4, },
+	 sendbox = { shape="circle", size = 3, xoff=0, yoff=0},
+	 recvbox = { shape="circle", size = 4, xoff=0, yoff=0},
       }
       setmetatable(o, self)
       self.__index = self
@@ -130,12 +128,6 @@ local yolk = {
       self.y = math.max(self.y, 0)
       self.y = math.min(self.y, 160)
 
-      -- Hitboxes
-      self.sendbox.x = self.x
-      self.sendbox.y = self.y
-      self.recvbox.x = self.x
-      self.recvbox.y = self.y
-
       self.statetime = self.statetime + self.anim.speed
    end,
 
@@ -154,11 +146,6 @@ local yolk = {
    end,
 
    collide = function (self, with)
-      if with.enemy then
-	 self.despawn = true
-	 self.update = function (self)
-	 end
-      end
    end
 }
 
