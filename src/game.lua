@@ -39,7 +39,6 @@ local collideswith = function (send, recv)
 
    -- Rectangle collisions
    local field_field = function (f1, f2)
-      -- Check x first, it's easier
       local distx = f1.x - f2.x
       local sizex = f1.width + f2.width
       local skewdist = distx * (f1.skew + f2.skew)
@@ -98,7 +97,6 @@ game.update = function ()
    -- game.scroll = game.scroll + 0.25
 end
 
-local particleCanvas = love.graphics.newCanvas()
 game.draw = function ()
    -- Passes x and y to self for scrolling...todo
    table.sort(actors,
