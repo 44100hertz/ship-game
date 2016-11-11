@@ -154,7 +154,7 @@ local yolk = {
 	 love.audio.play(sound_asplode)
 	 love.audio.play(sound_die)
 	 game.shake = 40
-	 effect.asplode(self.x, self.y, 167, 80, 99, 5, 100)
+	 effect.asplode(self.x, self.y, 135, 182, 195, 5, 100)
 	 self.despawn = true
       end
    end

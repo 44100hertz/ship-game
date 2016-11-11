@@ -95,7 +95,7 @@ local cateye = {
 	 love.audio.stop(sound_asplode)
 	 love.audio.play(sound_asplode)
 	 game.addactor(nil, dead_cateye, self.x, self.y)
-	 effect.asplode(self.x, self.y, 0, 0, 0, 4)
+	 effect.asplode(self.x, self.y, 213, 158, 130, 4)
 	 self.despawn = true
       end
    end,
