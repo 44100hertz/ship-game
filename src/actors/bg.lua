@@ -6,10 +6,10 @@ local wall = {
    new = function (self, x, y)
       local o = {
 	 class = "enemy",
-	 x=x, y=y, depth=1000,
+	 x=x, y=y, depth=125,
 	 sendbox = {
 	    shape = "field",
-	    xoff=-20, yoff=0, width=300,
+	    xoff=-20, yoff=0, width=300, height=4, skew=0,
 	 }
       }
       setmetatable(o, self)
@@ -22,14 +22,14 @@ local wall = {
    end,
 
    draw = function (self, x, y)
-      love.graphics.draw(img, quad, game.scroll%16-16, y)
+      love.graphics.draw(img, quad, game.scroll%16-16, y, 0, 1, 1, 0, 8)
    end,
 }
 
 local wall = {
    new = function (self)
-      game.addactor(nil, wall, 240, -8)
-      game.addactor(nil, wall, 0, 144)
+      game.addactor(nil, wall, 0, 0)
+      game.addactor(nil, wall, 0, 160)
       return { despawn = true }
    end
 }
