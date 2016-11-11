@@ -9,7 +9,9 @@ local wall = {
 	 x=x, y=y, depth=125,
 	 sendbox = {
 	    shape = "field",
-	    xoff=-20, yoff=0, width=300, height=4, skew=0,
+	    xoff=0, yoff=0,
+	    width=240, height=4,
+	    skew=0,
 	 }
       }
       setmetatable(o, self)
@@ -24,14 +26,6 @@ local wall = {
    draw = function (self, x, y)
       love.graphics.draw(img, quad, game.scroll%16-16, y, 0, 1, 1, 0, 8)
    end,
-}
-
-local wall = {
-   new = function (self)
-      game.addactor(nil, wall, 0, 0)
-      game.addactor(nil, wall, 0, 160)
-      return { despawn = true }
-   end
 }
 
 return wall

@@ -10,6 +10,7 @@ local game = {
 }
 
 local cateye = require "actors/cateye"
+local wall = require "actors/bg"
 
 game.shake = 0
 
@@ -21,7 +22,8 @@ game.init = function ()
    game.addactor(nil, cateye, 260, 40)
    game.addactor(nil, cateye, 280, 120)
    game.addactor(nil, require "actors/player", 40, 80)
-   game.addactor(nil, require "actors/bg")
+   game.addactor(nil, wall, 0, 0)
+   game.addactor(nil, wall, 0, 160)
 end
 
 game.addactor = function (parent, newactor, x, y)
