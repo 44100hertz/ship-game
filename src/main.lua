@@ -34,7 +34,6 @@ love.run = function ()
       state.update()
 
       canvas:renderTo( function()
-	    love.graphics.clear(85,45,65,255)
 	    state.draw()
       end)
 
