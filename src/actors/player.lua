@@ -131,8 +131,10 @@ local yolk = {
       if input.dl > 0 then self.dx = self.dx - 0.5 end
       if input.dr > 0 then self.dx = self.dx + 0.5 end
 
-      self.dx = self.dx * 0.75 -- Friction
-      self.dy = self.dy * 0.75
+      local anglemotion = math.sqrt(self.dx*self.dx + self.dy*self.dy)
+      local friction = 0.95 - ((anglemotion) * 0.1)
+      self.dx = self.dx * friction
+      self.dy = self.dy * friction
 
       if math.abs(self.dx) < 0.1 then self.dx = 0 end -- Velocity floor
       if math.abs(self.dy) < 0.1 then self.dy = 0 end
