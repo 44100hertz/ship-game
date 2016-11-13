@@ -3,16 +3,23 @@ require "collision"
 
 love.graphics.setDefaultFilter("nearest","nearest")
 
-local actors = {}
-local hitboxes = {}
+local actors
+local loaded_actors
 local level
-local game = {
-   scroll = 0,
-   shake = 0,
-}
+local game = {}
 
 game.init = function ()
+   actors = {}
+   loaded_actors = {}
    level = require "levels/1"
+   print(level.actors[1])
+   game.scroll = 0
+   game.shake = 0
+end
+
+game.reset = function ()
+   package.loaded.level = nil
+   game.init()
 end
 
 game.addactor = function (parent, newactor, x, y)
@@ -24,9 +31,9 @@ end
 game.update = function ()
    -- Load in Actors --
    for k,v in ipairs(level.actors) do
-      if v and v[2]-360 < game.scroll then
+      if not loaded_actors[k] and v and v[2]-360 < game.scroll then
 	 game.addactor(nil, unpack(v))
-	 level.actors[k] = nil
+	 loaded_actors[k] = true
       end
    end
 
@@ -49,7 +56,8 @@ game.draw = function ()
 
    table.sort(actors, -- Depth Ordering
 	      function (o1, o2)
-		 return (o1.depth > o2.depth) -- Higher num = further back
+		 -- Higher num = further back
+		 return (o1.draw and o2.draw and o1.depth > o2.depth)
 	      end
    )
    game.shake = (game.shake > 1) and game.shake-1 or 0

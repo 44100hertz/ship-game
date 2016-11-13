@@ -76,6 +76,19 @@ local white = {
    end
 }
 
+local dead_player = {
+   new = function (self)
+      local o = {resettimer = 120,}
+      setmetatable(o, self)
+      self.__index = self
+      return o
+   end,
+   update = function (self)
+      self.resettimer = self.resettimer - 1
+      if(self.resettimer == 0) then game.reset() end
+   end,
+}
+
 local yolk_sheet = animation.sheet(0, 16, 20, 16, iwidth, iheight, 10, 3)
 local yolk_anim = {
    idle = {1, speed=0},
@@ -152,6 +165,7 @@ local yolk = {
 	 love.audio.play(sound_die)
 	 game.shake = 40
 	 effect.asplode(self.x, self.y, 135, 182, 195, 5, 100)
+	 game.addactor(nil, dead_player)
 	 self.despawn = true
       end
    end
