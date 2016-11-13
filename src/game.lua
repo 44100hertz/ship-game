@@ -53,8 +53,8 @@ game.draw = function ()
 
    table.sort(actors, -- Depth Ordering
 	      function (o1, o2)
-		 -- Higher num = further back
-		 return (o1.draw and o2.draw and o1.depth > o2.depth)
+		 return (o1.draw and o2.draw -- Don't sort invisible
+			    and o1.depth > o2.depth) -- Higher num = further back
 	      end
    )
    game.shake = (game.shake > 1) and game.shake-1 or 0
