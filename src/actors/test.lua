@@ -3,18 +3,14 @@ local img = love.graphics.newImage("img/testcirc.png")
 test = {
    new = function (self, x, y)
       o = {
+	 class = "enemy",
 	 x=x, y=y,
-	 sendbox = {size = 24, x=x, y=y},
-	 recvbox = {size = 24, x=x, y=y},
-	 enemy = true,
+	 hitbox = {shape="circle", size=24, send=true},
 	 depth = 0,
       }
       setmetatable(o, self)
       self.__index = self
       return o
-   end,
-
-   update = function (self)
    end,
 
    draw = function (self,x,y)
@@ -23,9 +19,6 @@ test = {
 	 0, 1, 1, 24, 24
       )
    end,
-
-   collide = function (self, with)
-   end
 }
 
 return test

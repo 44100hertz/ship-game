@@ -1,8 +1,10 @@
+local test = require "actors/test"
 local wall = require "actors/bg"
 local cateye = require "actors/cateye"
 local player = require "actors/player"
 
 local actors = {
+   {test, 100, 100},
    {player, 40, 80},
    {wall, 0, 0},
    {wall, 0, 160},
