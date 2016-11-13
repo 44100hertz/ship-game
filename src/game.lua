@@ -78,11 +78,10 @@ game.update = function ()
       if recv.recvbox then
 	 for isend,send in ipairs(actors) do
 	    if send.sendbox and send.class ~= recv.class then
-	       recv.recvbox.x = recv.x + recv.recvbox.xoff
-	       recv.recvbox.y = recv.y + recv.recvbox.yoff
-	       send.sendbox.x = send.x + send.sendbox.xoff
-	       send.sendbox.y = send.y + send.sendbox.yoff
-
+	       recv.recvbox.x = recv.x
+	       recv.recvbox.y = recv.y
+	       send.sendbox.x = send.x
+	       send.sendbox.y = send.y
 	       if collideswith(recv.recvbox, send.sendbox) then
 		  recv:collide(send)
 	       end

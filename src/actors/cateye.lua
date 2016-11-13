@@ -48,7 +48,7 @@ local cateye = {
 	 depth = 105,
 	 recvbox = {
 	    shape = "field",
-	    xoff=1, yoff=0, width=4, height=10, skew=0,
+	    width=4, height=10, skew=0,
 	 },
 	 sendbox = {
 	    shape = "field",

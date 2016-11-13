@@ -9,9 +9,7 @@ local wall = {
 	 x=x, y=y, depth=125,
 	 sendbox = {
 	    shape = "field",
-	    xoff=0, yoff=0,
-	    width=240, height=4,
-	    skew=0,
+	    width=240, height=4, skew=0,
 	 }
       }
       setmetatable(o, self)
