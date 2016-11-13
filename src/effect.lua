@@ -20,7 +20,7 @@ effect.asplode = function (x, y, r, g, b, size, density)
    splode.particle:setSpeed(size*4,size*8)
    splode.particle:setSpread(math.pi*2)
    splode.particle:setEmissionRate(100)
-   effects[table.getn(effects)+1] = splode
+   effects[#effects+1] = splode
 end
 
 effect.draw = function (scroll)

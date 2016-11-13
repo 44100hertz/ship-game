@@ -20,7 +20,7 @@ game.reset = function ()
 end
 
 game.addactor = function (parent, newactor, x, y)
-   local index = table.getn(actors) + 1
+   local index = #actors + 1
    actors[index] = {} -- Fixes issue with :new calling actors.add
    actors[index] = newactor:new(x, y, parent)
 end
