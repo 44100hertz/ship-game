@@ -46,13 +46,9 @@ local cateye = {
 	 anim = anim.idle,
 	 statetime = 0,
 	 depth = 105,
-	 recvbox = {
-	    shape = "field",
-	    width=4, height=10, skew=0,
-	 },
-	 sendbox = {
-	    shape = "field",
-	    xoff=1, yoff=0, width=4, height=1000, skew=0,
+	 hitbox = {
+	    shape="field", width=4, height=160, skew=0,
+	    send=true, recv=true,
 	 },
 	 beamtime = 0,
       }
@@ -91,7 +87,8 @@ local cateye = {
    end,
 
    collide = function (self, with)
-      if with.class == "player" then
+      local ydist = math.abs(self.y - with.y)
+      if with.class == "player" and ydist < 10 then
 	 love.audio.stop(sound_asplode)
 	 love.audio.play(sound_asplode)
 	 game.addactor(nil, dead_cateye, self.x, self.y)

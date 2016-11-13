@@ -7,9 +7,9 @@ local wall = {
       local o = {
 	 class = "enemy",
 	 x=x, y=y, depth=125,
-	 sendbox = {
-	    shape = "field",
-	    width=240, height=4, skew=0,
+	 hitbox = {
+	    shape = "field", width=240, height=4, skew=0,
+	    send=true
 	 }
       }
       setmetatable(o, self)

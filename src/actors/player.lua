@@ -15,8 +15,7 @@ local bullet = {
 	 x=x, y=y,
 	 dx = parent.dx + 3,
 	 dy = parent.dy,
-	 sendbox = {shape = "circle", size = 2},
-	 recvbox = {shape = "circle", size = 2},
+	 hitbox = {shape="circle", size=2, send=true, recv=true},
       }
       setmetatable(o, self)
       self.__index = self
@@ -95,8 +94,7 @@ local yolk = {
 	 dx=0, dy=0,
 	 anim = yolk_anim.idle,
 	 statetime = 0,
-	 sendbox = { shape="circle", size = 3},
-	 recvbox = { shape="circle", size = 3},
+	 hitbox = {shape="circle", size=3, send=true, recv=true},
       }
       setmetatable(o, self)
       self.__index = self

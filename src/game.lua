@@ -73,46 +73,47 @@ local collideswith = function (send, recv)
 end
 
 game.update = function ()
-   -- Check all hitboxes
-   for irecv,recv in ipairs(actors) do
-      if recv.recvbox then
-	 for isend,send in ipairs(actors) do
-	    if send.sendbox and send.class ~= recv.class then
-	       recv.recvbox.x = recv.x
-	       recv.recvbox.y = recv.y
-	       send.sendbox.x = send.x
-	       send.sendbox.y = send.y
-	       if collideswith(recv.recvbox, send.sendbox) then
-		  recv:collide(send)
-	       end
+   -- Collisions --
+   for _,v in ipairs(actors) do -- Avoid collision movements stacking
+      if v.hitbox then
+	 v.hitbox.x = v.x
+	 v.hitbox.y = v.y
+      end
+   end
+   for irecv,recv in ipairs(actors) do -- Check for collisions
+      if recv.hitbox and recv.hitbox.recv then
+	 for irecv,send in ipairs(actors) do
+	    if send.hitbox and send.hitbox.send and
+	       send.class ~= recv.class and
+	    collideswith(send.hitbox, recv.hitbox) then
+	       recv:collide(send)
 	    end
 	 end
       end
    end
 
-   for k,v in ipairs(actors) do
+   -- Actor State --
+   for k,v in ipairs(actors) do -- Despawn only after all collisions finish
       if v.despawn then table.remove(actors, k) end
    end
+   for _,v in ipairs(actors) do -- Run actor update functions
+      if v.update then v:update() end
+   end
 
-      -- Update all actor states
-   for _,v in ipairs(actors) do v:update() end
-
-   -- TODO: add visscroll for when video is separate
-   game.scroll = game.scroll + 0.25
-
-   game.shake = (game.shake > 1) and game.shake-1 or 0
+   game.scroll = game.scroll + 0.25 -- TODO: separate visual scroll rate
 end
 
 game.draw = function ()
-   -- Passes x and y to self for scrolling...todo
-   table.sort(actors,
+   table.sort(actors, -- Depth Ordering
 	      function (o1, o2)
-		 return (o1.depth > o2.depth)
+		 return (o1.depth > o2.depth) -- Higher num = further back
 	      end
    )
-   effect.draw(game.scroll)
+   game.shake = (game.shake > 1) and game.shake-1 or 0
+   local shake = game.shake * ((game.shake % 2) - 0.5)
+
+   effect.draw(game.scroll) -- Draw visual effects on back layer
    for _,v in ipairs(actors) do
-      local shake = game.shake * ((game.shake % 2) - 0.5)
       if v.draw then
 	 v:draw(math.floor(v.x - game.scroll + 0.5),
 		math.floor(v.y + 0.5 + shake))
