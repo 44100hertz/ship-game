@@ -5,20 +5,17 @@ love.graphics.setDefaultFilter("nearest","nearest")
 
 local actors
 local loaded_actors
-local level
+local level = require "levels/1"
 local game = {}
 
 game.init = function ()
    actors = {}
    loaded_actors = {}
-   level = require "levels/1"
-   print(level.actors[1])
    game.scroll = 0
    game.shake = 0
 end
 
 game.reset = function ()
-   package.loaded.level = nil
    game.init()
 end
 
