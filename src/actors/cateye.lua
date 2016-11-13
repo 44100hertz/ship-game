@@ -4,6 +4,16 @@ local sheet = animation.sheet(0,0,16,16,iwidth,iheight,2,2)
 
 local sound_asplode = love.audio.newSource("sound/lilasplode.wav")
 
+local drawbeam = function (x, width)
+      love.graphics.setColor(0, 0, 0)
+      local beamwidth = width
+      local beamx = x - beamwidth/2 + 1.5
+      love.graphics.rectangle(
+	 "fill", beamx, 0, beamwidth, 160
+      )
+      love.graphics.setColor(255, 255, 255)
+end
+
 local dead_cateye = {
    new = function (self, x, y)
       local o = {
@@ -24,13 +34,7 @@ local dead_cateye = {
    end,
 
    draw = function (self, x, y)
-      love.graphics.setColor(0, 0, 0)
-      local beamwidth = 5 - math.floor(self.statetime)
-      local beamx = x - beamwidth/2 + 1.5
-      love.graphics.rectangle(
-	 "fill", beamx, 0, beamwidth, 160
-      )
-      love.graphics.setColor(255, 255, 255)
+      drawbeam(x, 5-math.floor(self.statetime))
    end
 }
 
@@ -65,22 +69,15 @@ local cateye = {
       end
 
       self.statetime = self.statetime + self.anim.speed
-
       self.beamtime = (self.beamtime + 1) % 5
    end,
 
    draw = function (self, x, y)
-      local frame = sheet[self.anim[math.ceil(self.statetime)]]
-
-      if not frame then frame = sheet[1] end
+      local frame = sheet[self.anim[math.floor(self.statetime)]] or sheet[1]
 
       love.graphics.setColor(0, 0, 0)
-      local beamwidth = self.beamtime+3
-      local beamx = x - beamwidth/2 + 1.5
-      love.graphics.rectangle(
-	 "fill", beamx, 0, beamwidth, 160
-      )
-      love.graphics.setColor(255, 255, 255)
+      drawbeam(x, self.beamtime+3)
+
       love.graphics.draw(
 	 img, frame, x, y,
 	 0, 1, 1, 7, 7)
