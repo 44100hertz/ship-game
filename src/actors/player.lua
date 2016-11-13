@@ -79,7 +79,7 @@ local white = {
 local yolk_sheet = animation.sheet(0, 16, 20, 16, iwidth, iheight, 10, 3)
 local yolk_anim = {
    idle = {1, speed=0},
-   shoot = {2, 3, 4, 5, 6, 7, speed=0.33},
+   shoot = {2, 3, 4, 5, 6, 7, speed=0.2},
    hurt = {11, 12, 13, 14, 15, speed=0.5},
    blink = {25, 24, 23, 22, speed=0.25},
 }
@@ -105,43 +105,42 @@ local yolk = {
    end,
 
    update = function (self)
-      -- Shooting
+      -- Shooting --
       if input.b > 0 and self.anim == yolk_anim.idle then
 	 game.addactor(self, bullet, self.x, self.y)
 	 self.statetime = 0
 	 self.anim = yolk_anim.shoot
       end
 
-      -- Player Movement
-      if input.dd > 0 then self.dy = self.dy + 0.5 end
+      -- Movement --
+      if input.dd > 0 then self.dy = self.dy + 0.5 end -- Input
       if input.du > 0 then self.dy = self.dy - 0.5 end
       if input.dl > 0 then self.dx = self.dx - 0.5 end
       if input.dr > 0 then self.dx = self.dx + 0.5 end
 
-      -- Momentum
-      self.dx = self.dx * 0.75
+      self.dx = self.dx * 0.75 -- Friction
       self.dy = self.dy * 0.75
-      if math.abs(self.dx) < 0.1 then self.dx = 0 end
+
+      if math.abs(self.dx) < 0.1 then self.dx = 0 end -- Velocity floor
       if math.abs(self.dy) < 0.1 then self.dy = 0 end
-      self.x = self.x + self.dx
+
+      self.x = self.x + self.dx -- Velocity
       self.y = self.y + self.dy
 
-      -- Screen limits
-      self.x = math.max(self.x, game.scroll)
+      self.x = math.max(self.x, game.scroll) -- Screen limits
       self.x = math.min(self.x, game.scroll+240)
 
-      self.statetime = self.statetime + self.anim.speed
+      -- State/animation --
+      self.statetime = self.statetime + self.anim.speed -- Keep track of time
+
+      if not self.anim[math.floor(self.statetime)+1] then -- Over? idle.
+	 self.anim = yolk_anim.idle
+	 self.statetime = 0
+      end
    end,
 
    draw = function (self,x,y)
-      local frame = yolk_sheet[self.anim[math.ceil(self.statetime)]]
-
-      if not frame then
-	 self.anim = yolk_anim.idle
-	 frame = yolk_sheet[1]
-	 self.statetime = 0
-      end
-
+      local frame = yolk_sheet[self.anim[math.floor(self.statetime)+1]]
       love.graphics.draw(
 	 img, frame, x, y,
 	 0, 1, 1, 7, 7)

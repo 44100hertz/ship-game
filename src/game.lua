@@ -2,17 +2,16 @@ require "effect"
 
 love.graphics.setDefaultFilter("nearest","nearest")
 
--- Table of all game actor
 local actors = {}
+local hitboxes = {}
 
 local game = {
-   scroll = 0
+   scroll = 0,
+   shake = 0,
 }
 
 local cateye = require "actors/cateye"
 local wall = require "actors/bg"
-
-game.shake = 0
 
 game.init = function ()
    game.addactor(nil, cateye, 180, 40)
