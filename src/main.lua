@@ -13,9 +13,9 @@ main = {
    end,
 }
 
-local canvas = love.graphics.newCanvas(240, 160)
-
 love.run = function ()
+   local canvas = love.graphics.newCanvas(240, 160)
+
    love.math.setRandomSeed(os.time())
    main.loadstate(require "game")
 
@@ -33,10 +33,12 @@ love.run = function ()
       input.update()
       state.update()
 
+      love.graphics.setBlendMode("alpha", "alphamultiply")
       canvas:renderTo( function()
 	    state.draw()
       end)
 
+      love.graphics.setBlendMode("replace", "premultiplied")
       love.graphics.draw( canvas, 0,0,0, 3 )
       love.graphics.present()
    end
